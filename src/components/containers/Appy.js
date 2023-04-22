@@ -1,6 +1,7 @@
 import "../project.css";
 import styled from "styled-components";
 import { AccountBox } from "../accountBox";
+import React from 'react';
 
 
 const AppContainer = styled.div`
