@@ -1,139 +1,124 @@
-import React, {Fragment} from "react";
-import {connect} from "react-redux";
-import SliderControl from "../SliderControl";
-import Grid from "@material-ui/core/Grid";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import {withRouter} from "react-router-dom";
-import {changeLoanType, changeModel, getInterest} from "../actions/PredictorAction";
-import CircularGraph from "../CircularGraph";
-import withWidth from "@material-ui/core/withWidth";
-import Icon from "@material-ui/core/es/Icon/Icon";
-const styles = theme => createStyles({
-    root: {
+import React, { useEffect } from "react";
+import {
+  withStyles,
+  withWidth,
+  Grid,
+  Typography,
+  ToggleButton,
+  ToggleButtonGroup,
+  Button,
+} from "@material-ui/core";
+import { connect } from "react-redux";
+import { changeLoanType, changeModel, getInterest } from "../store/actions";
+import SliderControl from "./SliderControl";
+import CircularGraph from "./CircularGraph";
 
-    },
-    controls: {
-        padding: 70,
-        [theme.breakpoints.down('sm')]: {
-            padding: "15px",
-            position: "absolute",
-            top: "145vw",
-            left: 0,
-            width: "100vw"
-        }
-    },
-    toggleContainer: {
-        height: 56,
-        padding: `0 ${theme.spacing.unit * 2}px`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: `${theme.spacing.unit}px 0`,
-        background: theme.palette.background.default,
-        [theme.breakpoints.down('sm')]: {
-            padding: 0,
-            margin: 0,
-            width: "100%",
-        }
-    },
-    toggleButton: {
-        padding: 10,
-        height: 50,
-        width: "33.33%"
-    },
-    buttonGroup: {
-        width: "100%",
-    },
-    label : {
-        padding: `0 ${theme.spacing.unit * 2}px`,
-    },
-    buttonContainer: {
-        padding: `50px ${theme.spacing.unit}px`,
-        textAlign: "right"
-    }
+const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  header: {
+    marginBottom: theme.spacing(2),
+  },
+  toggleButtonGroup: {
+    margin: `${theme.spacing(1)}px 0 ${theme.spacing(3)}px 0`,
+  },
+  buttonContainer: {
+    marginTop: theme.spacing(2),
+  },
+  label: {
+    marginBottom: theme.spacing(1),
+  },
 });
 
-class PredictorForm extends React.Component {
-    componentDidMount() {
-        this.props.onInit(this.props.values.loanAmount, this.props.values.termLength);
-    }
+function PredictorForm(props) {
+  const { classes, theme } = props;
 
-    render() {
-        const {classes} = this.props;
-        return (
-            <Fragment>
-                <Grid container className={classes.root} spacing={0}>
-                    <Grid item xs={12} md={6} className={classes.controls}>
-                        <Typography variant="h6" className={classes.label}>
-                            Overdraft Type
-                        </Typography>
-                        <div className={classes.toggleContainer}>
-                            <ToggleButtonGroup value={this.props.values.loanType.title} exclusive className={classes.buttonGroup}>
-                                {
-                                    (() => this.props.data.loanTypes.map((loanType, index) => {
-                                        let self = this;
-                                        return (
-                                            <ToggleButton onClick={() => self.props.changeType(loanType)} value={loanType.title} key={"loan_"+index} className={classes.toggleButton}>
-                                                { (this.props.width === 'sm' || this.props.width === 'xs') ? <Icon>{loanType.icon}</Icon> : loanType.title}
-                                            </ToggleButton>
-                                        );
-                                    }))()
-                                }
-                            </ToggleButtonGroup>
-                        </div>
+  useEffect(() => {
+    props.onInit(props.values.amount, props.values.term);
+  }, [props.values.amount, props.values.term]);
 
-                        <SliderControl min={500} max={5000} step={50} prefix="KES" value={this.props.values.loanAmount} onChange={(value) => this.props.changeModel("loanAmount", value)}>
-                            Equidraft Amount
-                        </SliderControl>
-                        <SliderControl min={6} max={24} step={1} value={this.props.values.termLength} onChange={(value) => this.props.changeModel("termLength", value)}>
-                            Term Length (Days)
-                        </SliderControl>
-
-                        <div className={classes.buttonContainer}>
-                            <Button variant="contained" color="primary" onClick={() => this.props.history.push("/apply")}>
-                                Get Started
-                            </Button>
-                        </div>
-                    </Grid>
-                    <Grid item md>
-                        <CircularGraph
-                            loanType={this.props.values.loanType}
-                            loanAmount={this.props.values.loanAmount}
-                            termLength={this.props.values.termLength}
-                            interestRate={this.props.values.interestRate}
-                            monthlyPayment={this.props.values.monthlyPayment}
-                        />
-                    </Grid>
-                </Grid>
-            </Fragment>
-        );
-    }
+  return (
+    <>
+      <Typography variant="h4" className={classes.header}>
+        Loan Predictor
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
+          <div className={classes.toggleButtonGroup}>
+            <ToggleButtonGroup
+              value={props.values.loanType.type}
+              exclusive
+              onChange={(event, value) => props.changeType(value)}
+            >
+              {props.data.map((loanType) => (
+                <ToggleButton key={loanType.type} value={loanType.type}>
+                  {loanType.icon}
+                  {loanType.title}
+                  <CircularGraph
+                    percentage={loanType.percentage}
+                    strokeWidth={6}
+                    text={loanType.title}
+                    textColor={theme.palette.primary.main}
+                    trailColor={theme.palette.grey[300]}
+                    gradient={[
+                      theme.palette.primary.main,
+                      theme.palette.grey[600],
+                    ]}
+                    width={50}
+                    height={50}
+                  />
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </div>
+          <Typography variant="h6" className={classes.label}>
+            {props.values.loanType.title}
+          </Typography>
+          <SliderControl
+            min={1}
+            max={4}
+            step={1}
+            defaultValue={props.values.model}
+            marks={[
+              { value: 1, label: "Model 1" },
+              { value: 2, label: "Model 2" },
+              { value: 3, label: "Model 3" },
+              { value: 4, label: "Model 4" },
+            ]}
+            onChangeCommitted={(event, value) => props.changeModel(value)}
+          />
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => props.history.push("/result")}
+            >
+              Predict
+            </Button>
+          </div>
+        </Grid>
+      </Grid>
+    </>
+  );
 }
 
 const mapStateToProps = (state) => {
-    return {
-        data: state.predictor.data,
-        values: state.predictor.values
-    };
+  return {
+    data: state.predictor,
+    values: state.predictor.values,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        changeType: type => {
-            dispatch(changeLoanType(type));
-        },
-        changeModel: (model, value) => {
-            dispatch(changeModel({model, value, recalculate: false}))
-        },
-        onInit: (loanAmount, termLength) => {
-            dispatch(getInterest({loanAmount, termLength}))
-        }
-    };
+  return {
+    changeType: (loanType) => dispatch(changeLoanType(loanType)),
+    changeModel: (model) => dispatch(changeModel(model)),
+    onInit: (amount, term) => dispatch(getInterest(amount, term)),
+  };
 };
 
-export default withWidth()(withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PredictorForm))));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(withWidth()(PredictorForm)));

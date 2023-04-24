@@ -1,32 +1,67 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Button from "@material-ui/core/Button";
-import {withRouter} from "react-router-dom";
+import Hidden from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { useNavigate } from "react-router-dom";
 
 const styles = theme => createStyles({
-    success: {
-        color: "green",
-        textAlign: "center"
-    }
+  icon: {
+    fontSize: "0.8rem"
+  }
 });
 
-const Success = props => {
-    const {classes} = props;
-    return (
-        <div className={classes.success}>
-            <div>
-                Successfully submitted the loan application.
-            </div>
-            <div>
-                <br/>
-                <br/>
-                <Button variant="contained" color="primary" onClick={() => props.history.push("/")}>
-                    Home
-                </Button>
-            </div>
+const MobileHeader = props => {
+  const { classes } = props;
+  const navigate = useNavigate();
+
+  const fullList = (
+    <div className={classes.list}>
+      <List>
+        {[{ title: "Login", link: "/login" }, { title: "Signup", link: "/signup" }, { title: "Predictor", link: "/predict" }, { title: "Apply", link: "/apply" }, { title: "My Loans", link: "/loans" }].map((menu, index) => (
+          <ListItem button key={menu.title} onClick={() => navigate(menu.link) || props.toggleDrawer()}>
+            <ListItemText primary={menu.title} />
+            <ListItemIcon><Icon>chevron_right</Icon></ListItemIcon>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+  
+  return (
+    <Hidden lgUp>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton onClick={props.toggleDrawer}><Icon style={{ color: "white" }}>menu</Icon></IconButton>
+          <Typography variant="h6" color="inherit" className={classes.grow}>
+            E<MonetizationOnIcon className={classes.icon} />quidraft
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer
+        anchor="left"
+        open={props.isOpen}
+      >
+        <div
+          tabIndex={0}
+          role="button"
+        >
+          {fullList}
         </div>
-    );
+      </Drawer>
+    </Hidden>
+  );
 };
 
-export default withRouter(withStyles(styles)(Success));
+export default withStyles(styles)(MobileHeader);

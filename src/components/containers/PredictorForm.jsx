@@ -101,60 +101,62 @@ function PredictorForm(props) {
                       trailColor={theme.palette.grey[300]}
                       gradient={[
                         theme.palette.primary.main,
-                        theme.palette
-                        .grey[600],
-                    ]}
-                    width={50}
-                    height={50}
+                        theme.palette.grey[600],
+                      ]}
+                      width={50}
+                      height={50}
                     />
-                    )}
-                    </ToggleButton>
-                    ))}
-                    </ToggleButtonGroup>
-                    </div>
-                    <Typography variant="h6" className={classes.label}>
-                    Car Model
-                    </Typography>
-                    <SliderControl
-                    min={1}
-                    max={4}
-                    step={1}
-                    defaultValue={props.values.model}
-                    marks={[
-                    { value: 1, label: "Model 1" },
-                    { value: 2, label: "Model 2" },
-                    { value: 3, label: "Model 3" },
-                    { value: 4, label: "Model 4" },
-                    ]}
-                    onChangeCommitted={(event, value) => props.changeModel(value)}
-                    />
-                    <div className={classes.buttonContainer}>
-                    <Button variant="contained" color="primary" onClick={() => navigate("/result")}>
-                    Predict
-                    </Button>
-                    </div>
-                    </Grid>
-                    </Grid>
-                    </>
-                    );
-                    }
-                    
-                    const mapStateToProps = (state) => {
-                    return {
-                    data: state.predictor,
-                    values: state.predictor.values,
-                    };
-                    };
-                    
-                    const mapDispatchToProps = (dispatch) => {
-                    return {
-                    changeType: (loanType) => dispatch(changeLoanType(loanType)),
-                    changeModel: (model) => dispatch(changeModel(model)),
-                    onInit: (amount, term) => dispatch(getInterest(amount, term)),
-                    };
-                    };
-                    
-                    export default connect(
-                    mapStateToProps,
-                    mapDispatchToProps
-                    )(withStyles(styles)(withWidth()(PredictorForm)));
+                  )}
+                </ToggleButton>
+              ))}
+            </ToggleButtonGroup>
+          </div>
+          <<Typography variant="h6" className={classes}>
+          {props.values.loanType.title}
+        </Typography>        
+          <SliderControl
+            min={1}
+            max={4}
+            step={1}
+            defaultValue={props.values.model}
+            marks={[
+              { value: 1, label: "Model 1" },
+              { value: 2, label: "Model 2" },
+              { value: 3, label: "Model 3" },
+              { value: 4, label: "Model 4" },
+            ]}
+            onChangeCommitted={(event, value) => props.changeModel(value)}
+          />
+          <div className={classes.buttonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate("/result")}
+            >
+              Predict
+            </Button>
+          </div>
+        </Grid>
+      </Grid>
+    </>
+  );
+        }
+  const mapStateToProps = (state) => {
+    return {
+      data: state.predictor,
+      values: state.predictor.values,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      changeType: (loanType) => dispatch(changeLoanType(loanType)),
+      changeModel: (model) => dispatch(changeModel(model)),
+      onInit: (amount, term) => dispatch(getInterest(amount, term)),
+    };
+  };
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(withWidth()(PredictorForm)));
