@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import MonitizationOn from "@material-ui/icons/MonetizationOn";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import { withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const styles = theme => createStyles({
     root: {
@@ -78,9 +78,10 @@ const whyUs = [
 
 const LeftSection = (props) => {
     const {classes} = props;
+    const navigate = useNavigate();
     let path = props.location.pathname.substr(1);
     if(path === "")
-        props.history.push("predict");
+        navigate("predict");
 
     return (
         <Paper className={classes.root}>
@@ -91,7 +92,7 @@ const LeftSection = (props) => {
                 navs.map((nav, index) => {
                     return (
                         <div className={classes.nav} key={index}>
-                            <Button variant="outlined" color="primary" className={classes.navLink + " " + (path === nav.link ? classes.navActive : "")} onClick={() => props.history.push(nav.link)}>
+                            <Button variant="outlined" color="primary" className={classes.navLink + " " + (path === nav.link ? classes.navActive : "")} onClick={() => navigate(nav.link)}>
                                 {nav.name}
                             </Button>
                         </div>
@@ -104,17 +105,14 @@ const LeftSection = (props) => {
             <br/>
             <Typography component="h5" variant="h5" className={classes.whyUs}>
                 Why choose Equidraft?
-            </Typography>
+            </Typography
             <br/>
             {
-                whyUs.map((data, index) => {
+                whyUs.map((reason, index) => {
                     return (
-                        <div key={index}>
-                            <Typography component="h6" variant="h6" color={"inherit"}>
-                                { data }
-                            </Typography>
-                            <br/>
-                        </div>
+                        <Typography component="p" variant="body1" key={index} className={classes.whyUs}>
+                            {reason}
+                        </Typography>
                     );
                 })
             }
@@ -122,4 +120,4 @@ const LeftSection = (props) => {
     );
 };
 
-export default withRouter(withStyles(styles)(LeftSection));
+export default withStyles(styles)(LeftSection);    
