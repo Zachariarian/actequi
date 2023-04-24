@@ -1,7 +1,6 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Hidden from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +12,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+//import Slider from '@material-ui/lab/Slider';
 import { useNavigate } from "react-router-dom";
+import Hidden from "@material-ui/core/Hidden";
 
 const styles = theme => createStyles({
   icon: {

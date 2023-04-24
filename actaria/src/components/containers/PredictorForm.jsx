@@ -9,9 +9,9 @@ import {
   Button,
 } from "@material-ui/core";
 import { connect } from "react-redux";
-import { changeLoanType, changeModel, getInterest } from "../store/actions";
-import SliderControl from "./SliderControl";
-import CircularGraph from "./CircularGraph";
+import { changeLoanType, changeModel, getInterest } from "../actions/PredictorAction";
+import SliderControl from "../SliderControl";
+import CircularGraph from "../CircularGraph";
 
 const styles = (theme) => ({
   root: {
