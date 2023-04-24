@@ -105,7 +105,7 @@ const LeftSection = (props) => {
             <br/>
             <Typography component="h5" variant="h5" className={classes.whyUs}>
                 Why choose Equidraft?
-            </Typography
+            </Typography>
             <br/>
             {
                 whyUs.map((reason, index) => {
