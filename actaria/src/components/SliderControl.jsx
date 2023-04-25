@@ -3,7 +3,6 @@ import React from "react";
 import Slider from "@material-ui/lab/Slider";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import Slider from '@material-ui/lab/Slider';
 
 const styles = theme => createStyles({
     root: {
