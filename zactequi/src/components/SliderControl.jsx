@@ -1,6 +1,6 @@
-import Typography from "@material-ui/core/Typography";
 import React from "react";
-import Slider from "@material-ui/lab/Slider";
+import Slider from "@material-ui/core/Slider";
+import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 

@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import {
   withStyles,
   withWidth,
-  Grid,
+  Grid, 
   Typography,
-  ToggleButton,
-  ToggleButtonGroup,
   Button,
 } from "@material-ui/core";
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { connect } from "react-redux";
 import { changeLoanType, changeModel, getInterest } from "../actions/PredictorAction";
 import SliderControl from "../SliderControl";
@@ -119,7 +119,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(withWidth()(PredictorForm)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withWidth()(PredictorForm)));
